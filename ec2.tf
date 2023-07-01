@@ -2,7 +2,7 @@ locals {
  qprofiles_tags = {
   Name  = "Qprofiles-test-machine"
   env   = "testing"
-  owner = "teting_team"
+  owner = "testing_team"
 }
  production_tags = {
   Name  = "production-Qprofile-Machine"
