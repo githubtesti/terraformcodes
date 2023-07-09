@@ -1,0 +1,85 @@
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_vpc" "myvpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "myvpc"
+  }
+}
+
+resource "aws_subnet" "public-subnet" {
+  vpc_id                  = aws_vpc.myvpc.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "your-aws-availability-zone"
+  tags = {
+    Name = "public-subnet"
+  }
+}
+
+resource "aws_subnet" "private-subnet" {
+  vpc_id                  = aws_vpc.myvpc.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "your-aws-availability-zone"
+  tags = {
+    Name = "private-subnet"
+  }
+}
+
+resource "aws_internet_gateway" "myigw" {
+  vpc_id = aws_vpc.myvpc.id
+  tags = {
+    Name = "myigw"
+  }
+}
+
+resource "aws_vpc_attachment" "my_vpc_attachment" {
+  vpc_id             = aws_vpc.myvpc.id
+  internet_gateway_id = aws_internet_gateway.myigw.id
+}
+
+
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.myvpc.id
+  tags = {
+    Name = "public-route-table"
+  }
+}
+
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.myvpc.id
+  tags = {
+    Name = "private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "public_association" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+resource "aws_route_table_association" "private_association" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.private_route_table.id
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
