@@ -1,8 +1,11 @@
 terraform {
- backend "s3" {
-  bucket = "bucketname"
-  key    = "path/terraform.tfstate" 
-  region = "ap-south-1"
-  dynamodb_table= "tablename"
- }
+  backend "s3" {
+    bucket         = "your-bucket-name"
+    key            = "path/to/terraform.tfstate"
+    region         = "your-bucket-region"
+    dynamodb_table = "your-lock-table-name"
+    encrypt        = true
+  }
 }
+terraform state push
+terraform state list
